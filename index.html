@@ -14,7 +14,7 @@
    <body>
       <div id='map'></div>
       <script>
-         mapboxgl.accessToken = '<YOUR_TOKEN_KEY_HERE_PLS>'; // don't keep '<' & '>' when pasting token
+         mapboxgl.accessToken = 'pk.eyJ1Ijoibmlra2lpIiwiYSI6ImNqdWxhcHJqMTB1eXk0ZG80dDR2NjVkZnMifQ.jCTe3UM5cUDd67MWTlAp1A'; // don't keep '<' & '>' when pasting token
          
          var map = new mapboxgl.Map({
          container: 'map', // container id
@@ -26,9 +26,40 @@
          //	'mapbox://styles/mapbox/outdoors-v10'  
          //	'mapbox://styles/mapbox/satellite-v10' 
          //	'mapbox://styles/mapbox/traffic-night-v2'
-         center: [-78.6382, 35.7796], // change starting position to coordinates associated w/ your data.
-         zoom: 6 // starting zoom
+         center: [-81.2023, 25.730], // change starting position to coordinates associated w/ your data.
+         zoom: 16 // starting zoom
          });
+              //  # -- Add source of data as map layer -- #
+              // # Continuing with the same example data, we can find out what the property value 
+              // of interests' range / interquartile ranges are (recommended to do in R considering 
+              // it should still be loaded in your environment)
+              // # we then take the data values (I've found 5 values tend to be sufficient for some 
+              // straightforward color mapping), and associate them with HEX color codes 
+              // (e.g., #fff = white) by adding "stops". Done like below:
+              map.addLayer({
+               'id': 'do_rast1',
+               "type": "fill",
+               "source": {
+                  type: 'GeoJSON',
+                  data: 'C:/ncstate/715/labs/mapbox-lab/fires'
+              },
+               'layout': {},
+               'paint': {
+                   'fill-color': {
+                     property: 'do_rast1',
+                     type: 'exponential',
+                     stops: [
+                     [8.312620, '#edf8fb'],
+                     [8.656304, '#b2e2e2'],
+                     [8.7, '#66c2a4'],
+                     [8.9, '#2ca25f'],
+                     [9.119719, '#006d2c']
+                     ],
+                   },
+                   'fill-opacity': 0.2
+               }
+           });
       </script>
+    
    </body>
 </html>
